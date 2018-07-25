@@ -336,8 +336,8 @@ func main() {
 		panic(err)
 	}
 
-	startWatch(clientset)
-	//podTest(clientset)
-	//deployTest(clientset)
+	//startWatch(clientset)
+	podTest(clientset)
+	deployTest(clientset)
 	svcTest(clientset)
 }
