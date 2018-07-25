@@ -23,8 +23,7 @@ import (
 	"os"
 	"path/filepath"
 
-	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
-	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
+	"reflect"
 )
 
 // 初始化连接并返回client实例集合
@@ -250,7 +249,7 @@ func svcTest(clientset *kubernetes.Clientset) {
 			panic(fmt.Errorf("Failed to get latest version of Service: %v", err))
 		}
 
-		result.Spec.Ports[0].NodePort = 30000
+		result.Spec.Selector["app"] = "nginx1"
 		_, err = svcsClient.Update(result)
 		return err
 	})
@@ -289,7 +288,8 @@ func startWatch(clientset *kubernetes.Clientset) {
 		for {
 			select {
 			case e, _ := <-w.ResultChan():
-				fmt.Println(e.Type, e.Object)
+				v := reflect.ValueOf(e.Object)
+				fmt.Println(e.Type, v.Elem().Interface().(appsv1.Deployment).Status)
 			}
 		}
 	}()
@@ -299,7 +299,8 @@ func startWatch(clientset *kubernetes.Clientset) {
 		for {
 			select {
 			case e, _ := <-w.ResultChan():
-				fmt.Println(e.Type, e.Object)
+				v := reflect.ValueOf(e.Object)
+				fmt.Println(e.Type, v.Elem().Interface().(apiv1.Service).Status)
 			}
 		}
 	}()
@@ -336,7 +337,7 @@ func main() {
 	}
 
 	//startWatch(clientset)
-	podTest(clientset)
+	//podTest(clientset)
 	//deployTest(clientset)
-	//svcTest(clientset)
+	svcTest(clientset)
 }
