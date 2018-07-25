@@ -338,6 +338,6 @@ func main() {
 
 	//startWatch(clientset)
 	podTest(clientset)
-	deployTest(clientset)
-	svcTest(clientset)
+	//deployTest(clientset)
+	//svcTest(clientset)
 }
