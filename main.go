@@ -36,7 +36,6 @@ func initClientSet() (*kubernetes.Clientset, error) {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	}
 	flag.Parse()
-	fmt.Println(kubeconfig)
 
 	// 如果应用跑在集群内部，则用这种方式初始化config
 	//config, err := rest.InClusterConfig()
