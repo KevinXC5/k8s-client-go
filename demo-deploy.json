@@ -1,0 +1,48 @@
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "demo-deploy"
+  },
+  "spec": {
+    "replicas": 2,
+    "strategy": {
+      "rollingUpdate": {
+        "maxSurge": 1,
+        "maxUnavailable": 1
+      }
+    },
+    "revisionHistoryLimit": 2,
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "nginx",
+          "track": "stable"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "nginx",
+            "image": "nginx",
+            "resources": {
+              "requests": {
+                "cpu": "50m",
+                "memory": "200Mi"
+              },
+              "limits": {
+                "cpu": "500m",
+                "memory": "500Mi"
+              }
+            },
+            "ports": [
+              {
+                "containerPort": 80
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
